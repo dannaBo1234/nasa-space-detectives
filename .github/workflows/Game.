@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Space Detectives: Left Behind in Space</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: #fff;
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 15% 15%, #fff 1px, transparent 2px),
+        radial-gradient(circle at 80% 25%, #c2c5ff 1px, transparent 2px),
+        radial-gradient(circle at 60% 75%, #fff 1px, transparent 2px),
+        linear-gradient(180deg, #101044, #29145e 60%, #101044);
+      background-size: 120px 120px, 180px 180px, 150px 150px, auto;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .game {
+      width: min(100% - 28px, 900px);
+      margin: 0 auto;
+      padding: 28px 0 40px;
+      text-align: center;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .badge {
+      padding: 8px 13px;
+      border: 1px solid #ffffff55;
+      border-radius: 999px;
+      background: #ffffff12;
+      font-size: 0.9rem;
+    }
+
+    .panel {
+      padding: clamp(20px, 5vw, 40px);
+      border: 2px solid #ffffff35;
+      border-radius: 28px;
+      background: #17164ee8;
+      box-shadow: 0 15px 45px #05051e88;
+    }
+
+    h1 {
+      margin: 8px 0;
+      font-size: clamp(2rem, 7vw, 3.5rem);
+      line-height: 1.05;
+    }
+
+    h2 {
+      margin: 8px 0 12px;
+      font-size: clamp(1.6rem, 5vw, 2.4rem);
+    }
+
+    p {
+      max-width: 650px;
+      margin: 12px auto;
+      color: #e8e5ff;
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      line-height: 1.6;
+    }
+
+    .hero {
+      margin: 14px auto;
+      font-size: clamp(4rem, 15vw, 8rem);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .crew {
+      margin: 10px 0 20px;
+      font-size: 2.4rem;
+      letter-spacing: 8px;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      min-width: 150px;
+      padding: 13px 18px;
+      border: 0;
+      border-radius: 16px;
+      color: #21154e;
+      background: #ffe66d;
+      font-weight: 900;
+      box-shadow: 0 5px 0 #c5a828;
+      transition: transform 0.15s, filter 0.15s;
+    }
+
+    .btn:hover {
+      filter: brightness(1.08);
+      transform: translateY(-2px);
+    }
+
+    .btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 #c5a828;
+    }
+
+    .btn.secondary {
+      color: #fff;
+      background: #7959dc;
+      box-shadow: 0 5px 0 #5139a8;
+    }
+
+    .destinations {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .planet-card {
+      padding: 18px 12px;
+      border: 2px solid #ffffff38;
+      border-radius: 22px;
+      color: #fff;
+      background: #ffffff12;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .planet-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      background: #ffffff22;
+    }
+
+    .planet {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 4rem;
+    }
+
+    .planet-name {
+      display: block;
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    .small {
+      color: #c9c5ee;
+      font-size: 0.9rem;
+    }
+
+    .story {
+      margin: 20px auto;
+      padding: 16px;
+      border-radius: 18px;
+      color: #20154d;
+      background: #fff5bd;
+      font-size: 1.08rem;
+      line-height: 1.6;
+      text-align: left;
+    }
+
+    .robot {
+      margin: 10px 0;
+      font-size: 5rem;
+    }
+
+    .progress {
+      width: 100%;
+      height: 12px;
+      margin: 18px 0;
+      overflow: hidden;
+      border-radius: 99px;
+      background: #ffffff25;
+    }
+
+    .progress span {
+      display: block;
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #55e6c1, #ffe66d);
+      transition: width 0.5s ease;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    footer {
+      margin-top: 18px;
+      color: #c9c5ee;
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 500px) {
+      .top {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="game">
+    <div class="top">
+      <div class="badge">🚀 SPACE DETECTIVES</div>
+      <div class="badge" id="badge">Mission: Choose a destination</div>
+    </div>
+
+    <section class="panel" id="screen"></section>
+
+    <footer>
+      A little space adventure for curious explorers.
+    </footer>
+  </main>
+
+  <script>
+    const destinations = {
+      moon: {
+        name: "The Moon",
+        emoji: "🌕",
+        travel: "The Moon is our closest space neighbor. Your ship zooms past the stars and lands softly in the gray dust!",
+        robot: "🛞",
+        robotName: "The Moon Buggy",
+        story: "Astronauts drove small electric moon buggies during Apollo missions. They helped astronauts travel farther and collect Moon rocks. The buggies stayed on the Moon when the astronauts returned home.",
+        fact: "Moon fact: The Moon has no air to breathe!"
+      },
+      mars: {
+        name: "Mars",
+        emoji: "🔴",
+        travel: "Your ship travels through deep space. Mars grows bigger and bigger until—bump!—you land on the red planet.",
+        robot: "🤖",
+        robotName: "Sojourner the Rover",
+        story: "Sojourner was the first rover to drive on Mars. It arrived in 1997 with the Pathfinder mission. It explored rocks and sent messages back to Earth. Its mission ended, and it remains on Mars.",
+        fact: "Mars fact: Mars is called the Red Planet because its soil looks rusty!"
+      },
+      ceres: {
+        name: "Ceres",
+        emoji: "🪨",
+        travel: "You steer between the planets and arrive at Ceres, a small world in the asteroid belt. Your ship touches down for a visit!",
+        robot: "🛰️",
+        robotName: "The Dawn Spacecraft",
+        story: "NASA's Dawn spacecraft visited the dwarf planet Ceres and the asteroid Vesta. It studied their surfaces and sent pictures to Earth. When Dawn ran out of fuel, it stayed in orbit around Ceres.",
+        fact: "Ceres fact: Ceres is the largest object in the asteroid belt!"
+      }
+    };
+
+    const screen = document.getElementById("screen");
+    const badge = document.getElementById("badge");
+
+    function showWelcome() {
+      badge.textContent = "Mission: Choose a destination";
+
+      screen.innerHTML = `
+        <div class="hero">🪐</div>
+        <h1>Space Detectives</h1>
+        <p>
+          Hello, astronauts! Your crew has a special mission:
+          visit a space world and meet a real NASA explorer
+          that stayed behind.
+        </p>
+        <div class="crew" aria-label="astronaut crew">👩‍🚀 👨‍🚀 👩‍🚀</div>
+        <p>Where should your spaceship go?</p>
+        <div class="destinations">
+          <button class="planet-card" onclick="choosePlanet('moon')">
+            <span class="planet">🌕</span>
+            <span class="planet-name">The Moon</span>
+            <span class="small">Visit the Moon buggy</span>
+          </button>
+          <button class="planet-card" onclick="choosePlanet('mars')">
+            <span class="planet">🔴</span>
+            <span class="planet-name">Mars</span>
+            <span class="small">Meet the first rover</span>
+          </button>
+          <button class="planet-card" onclick="choosePlanet('ceres')">
+            <span class="planet">🪨</span>
+            <span class="planet-name">Ceres</span>
+            <span class="small">Find the Dawn spacecraft</span>
+          </button>
+        </div>
+      `;
+    }
+
+    function choosePlanet(key) {
+      const place = destinations[key];
+      badge.textContent = "Mission: Traveling to " + place.name;
+
+      screen.innerHTML = `
+        <div class="hero">🚀</div>
+        <h2>Blast off, astronauts!</h2>
+        <p>Your crew is flying to <strong>${place.name}</strong>.</p>
+        <div class="crew">👩‍🚀 &nbsp; 🌟 &nbsp; 👨‍🚀</div>
+        <div class="progress"><span id="bar"></span></div>
+        <p id="countdown">Engines ready...</p>
+      `;
+
+      const bar = document.getElementById("bar");
+      const countdown = document.getElementById("countdown");
+      const steps = [
+        "3... 2... 1... Blast off!",
+        "Zooming past the stars!",
+        "Getting closer...",
+        "Landing now!"
+      ];
+
+      let index = 0;
+      bar.style.width = "10%";
+
+      const timer = setInterval(() => {
+        if (index < steps.length) {
+          countdown.textContent = steps[index];
+          bar.style.width = ((index + 1) * 25) + "%";
+          index++;
+        } else {
+          clearInterval(timer);
+          showArrival(key);
+        }
+      }, 900);
+    }
+
+    function showArrival(key) {
+      const place = destinations[key];
+      badge.textContent = "Mission: Exploring " + place.name;
+
+      screen.innerHTML = `
+        <div class="hero">${place.emoji}</div>
+        <h2>We made it to ${place.name}!</h2>
+        <p>${place.travel}</p>
+        <div class="button-row">
+          <button class="btn" onclick="meetExplorer('${key}')">
+            Explore the surface
+          </button>
+        </div>
+      `;
+    }
+
+    function meetExplorer(key) {
+      const place = destinations[key];
+      badge.textContent = "Mission: Meet the explorer";
+
+      screen.innerHTML = `
+        <div class="robot">${place.robot}</div>
+        <h2>We found ${place.robotName}!</h2>
+        <p>Beep boop! This explorer has a story to tell.</p>
+        <div class="story">
+          <strong>Robot story:</strong><br>
+          ${place.story}
+        </div>
+        <div class="story">
+          <strong>Space fact:</strong><br>
+          ${place.fact}
+        </div>
+        <div class="button-row">
+          <button class="btn" onclick="showWelcome()">Choose another world</button>
+          <button class="btn secondary" onclick="restartMission()">Start again</button>
+        </div>
+      `;
+    }
+
+    function restartMission() {
+      showWelcome();
+    }
+
+    showWelcome();
+  </script>
+</body>
+</html>
